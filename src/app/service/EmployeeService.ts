@@ -76,6 +76,7 @@ export class EmployeeService{
         if (!employeeDetails) {
           throw new UserNotAuthorizedException();
         }
+        
         const validPassword = await bcrypt.compare(password, employeeDetails.password);
         if (validPassword) {
           let payload = {
