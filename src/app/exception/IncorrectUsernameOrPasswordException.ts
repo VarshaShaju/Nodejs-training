@@ -7,7 +7,8 @@ import { CustomError, ErrorCodes } from "../util/errorCode";
 class IncorrectUsernameOrPasswordException extends HttpException {
 
   constructor() {
-    super(403, ErrorCodes.USER_WITH_ID_NOT_FOUND.MESSAGE, ErrorCodes.USER_WITH_ID_NOT_FOUND.CODE);
+    const error: CustomError = ErrorCodes.INCORRECT_USERNAME_OR_PASSWORD;
+    super(401, error.MESSAGE, error.CODE);
   }
 }
 

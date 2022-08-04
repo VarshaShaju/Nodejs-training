@@ -12,7 +12,6 @@ const fmt: Formatter = new Formatter();
  * @param next
  */
 const errorMiddleware = (error: HttpException, request: Request, response: Response, next: NextFunction) => {
-  console.log(error)
   const status = error.status || 500;
   const message = error.message || "Something went wrong";
   const errorCode = error.errorCode || "ERROR_CODE_NOT_FOUND";

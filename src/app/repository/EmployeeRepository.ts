@@ -1,61 +1,62 @@
-import { getConnection, Repository } from "typeorm";
+import { getConnection } from "typeorm";
 import { Employee } from "../entities/Employee";
 
-export class EmployeeRespository {
-    // updateEmployeeDetails(newEmployee: Employee) {
-    //     throw new Error("Method not implemented.");
-    // }
-    // UpdateEmployeeDetails(newEmployee: Employee) {
-    //     throw new Error("Method not implemented.");
-    // }
-    public async getAllEmployees(){
+export class EmployeeRepository {
+    async getAllEmployees() {
         const employeeRepo = getConnection().getRepository(Employee);
-        return employeeRepo.findAndCount();
+        const data = await employeeRepo.find({
+            relations: [
+                'address'
+            ]
+        });
+        return data;
     }
 
-    public async getEmployeeById(id:string) {
+    public async getEmployeeById(employeeId: string) {
         const employeeRepo = getConnection().getRepository(Employee);
-        return employeeRepo.findOne(id);
+        const data = await employeeRepo.findOne({
+            where: {
+                id: employeeId
+            },
+            relations: [
+                'address'
+            ]
+        })
+        return data;
+    }
+
+    public async getEmployeeByName(username: string) {
+        const employeeRepo = getConnection().getRepository(Employee);
+        const employeeDetail = await employeeRepo.findOne({
+            where: { name: username },
+        });
+        return employeeDetail;
     }
 
     public async saveEmployeeDetails(employeeDetails: Employee) {
         const employeeRepo = getConnection().getRepository(Employee);
-        return employeeRepo.save(employeeDetails);
-    }
-    
-
-    public async updateEmployeeDetails(employeeId: string, employeeDetails: any) {
-        const employeeRepo = getConnection().getRepository(Employee);
-        const updateEmployeeDetails = await employeeRepo.update({ 
-            id: employeeId, deletedAt: null }, 
-        {
-            name: employeeDetails.name ? employeeDetails.name : undefined,
-            departmentId: employeeDetails.departmentId ? employeeDetails.departmentId : undefined,
-        });
-        return updateEmployeeDetails;
+        const data = employeeRepo.save(employeeDetails);
+        return data;
     }
 
-
-    public async softDeleteEmployeeById(id: string) {
+    public async softDeleteEmployee(employeeId: string) {
         const employeeRepo = getConnection().getRepository(Employee);
-        return employeeRepo.softDelete({
-            id
-        });
+        const entity = await employeeRepo.findOne({
+            where: {
+                id: employeeId
+            },
+            relations: [
+                'address'
+            ]
+        })
+        const data = await employeeRepo.softRemove(entity);
+        return data;
     }
 
-
-    public async hardDeleteEmployeeById(id: string) {
+    public async updateEmployee(employeeDetails: Employee) {
         const employeeRepo = getConnection().getRepository(Employee);
-        return employeeRepo.delete({
-            id
-        });
-    }
-
-    public async getEmployeeByName(userName: string) {
-        const employeeRepo = getConnection().getRepository(Employee);
-        const employeeDetail = await employeeRepo.findOne({
-            where: { name: userName },
-        });
-        return employeeDetail;
+        const data = await employeeRepo.save(employeeDetails)
+        const updatedData = await employeeRepo.findOne(employeeDetails.id)
+        return data;
     }
 }

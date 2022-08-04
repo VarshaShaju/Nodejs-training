@@ -1,7 +1,7 @@
 /**
  * Custom error codes to be send to UI to display proper a response
  */
-export const ErrorCodes: { [key: string]: CustomError } = {
+ export const ErrorCodes: { [key: string]: CustomError } = {
     UNAUTHORIZED: {
         CODE: "UNAUTHORIZED",
         MESSAGE: "User is not allowed to perform this operation",
@@ -17,6 +17,14 @@ export const ErrorCodes: { [key: string]: CustomError } = {
     VALIDATION_ERROR: {
         CODE: "VALIDATION_ERROR",
         MESSAGE: "Validation failed error",
+    },
+    EMPLOYEE_NOT_FOUND: {
+        CODE: "EMPLOYEE_NOT_FOUND",
+        MESSAGE: "Employee not found"
+    },
+    INCORRECT_USERNAME_OR_PASSWORD: {
+        CODE: "INCORRECT_USERNAME_OR_PASSWORD",
+        MESSAGE: "Incorrect username or password"
     }
 };
 
